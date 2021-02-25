@@ -30,7 +30,69 @@ for (const token of config.botToken) {
       const prefix = config.prefix;
       const args = message.content.slice(prefix.length).trim().split(/ +/g);
       const command = args.shift().toLowerCase();
-  
+	  
+	  if (command === "fish") {
+		function sendFishy() {
+			message.channel.send("t!fish");
+			
+			if (count < maxMessages) {
+				count++;
+				timeToWait = Math.floor(Math.random() * 1500) + 30500;
+				setTimeout(sendFishy, timeToWait);
+			} else {
+				console.log("Finished");
+			}
+		}
+		
+		message.delete().catch(console.error);
+		sendFishy();
+	  }
+	  
+	  if (command === "train") {
+		function sendTrain() {
+			message.channel.send("t!tg train");
+			
+			if (count < maxMessages) {
+				count++;
+				timeToWait = Math.floor(Math.random() * 1500) + 5500;
+				setTimeout(sendTrain, timeToWait);
+			} else {
+				console.log("Finished");
+			}
+		}
+		
+		message.delete().catch(console.error);
+		sendTrain();
+	  }
+	  
+	  if (command === "walk") {
+		let walk = 1;
+		function sendWalk() {
+			if (walk == 1) {
+				message.channel.send("t!tg walk");
+				walk++;
+			} else if (walk == 2) {
+				message.channel.send("t!tg walk");
+				walk++;
+			} else if (walk == 3) {
+				message.channel.send("t!tg feed");
+				walk = 1;
+				count++;
+			}
+			
+			if (count <= maxMessages) {
+				timeToWait = Math.floor(Math.random() * 1500) + 5500;
+				setTimeout(sendWalk, timeToWait);
+			} else {
+				count = 1;
+				console.log("Finished");
+			}
+		}
+		
+		message.delete().catch(console.error);
+		sendWalk();
+	  }
+	  
       if (command === "spam") {
         function sendSpamMessage() {
           // You could modify this to send a random string from an array (ex. a quote), create a
