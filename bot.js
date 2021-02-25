@@ -40,6 +40,7 @@ for (const token of config.botToken) {
 				timeToWait = Math.floor(Math.random() * 1500) + 30500;
 				setTimeout(sendFishy, timeToWait);
 			} else {
+				count = 1;
 				console.log("Finished");
 			}
 		}
@@ -57,6 +58,7 @@ for (const token of config.botToken) {
 				timeToWait = Math.floor(Math.random() * 1500) + 5500;
 				setTimeout(sendTrain, timeToWait);
 			} else {
+				count = 1;
 				console.log("Finished");
 			}
 		}
@@ -124,6 +126,7 @@ for (const token of config.botToken) {
           } else {
             // Sends a message when count is equal to maxMessages. Else statement can be
             // modified/removed without consequence.
+	    count = 1;
             message.channel.send("------------------");
             message.channel.send("I AM FINISHED!!!");
             message.channel.send("------------------");
