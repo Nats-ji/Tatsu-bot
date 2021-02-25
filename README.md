@@ -1,3 +1,28 @@
+Forkedd from [ajmeese7/spambot](https://github.com/ajmeese7/spambot).
+
+# How to use:
+
+- Afk fishing:
+   ```sh
+   node bot.js --maxMessages 100
+   ```
+   then type `/fish` in discord.
+
+- Afk pet training:
+   ```sh
+   node bot.js --maxMessages 100
+   ```
+   then type `/train` in discord.
+
+- Afk walking pet:
+   ```sh
+   node bot.js --maxMessages 100
+   ```
+   then type `/walk` in discord.
+
+
+# Original Guide:
+
 <p align="center">
   <h1 align="center">😈 Spambot 😈</h1>
 </p>
