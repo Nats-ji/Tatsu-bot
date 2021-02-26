@@ -34,67 +34,95 @@ for (const token of config.botToken) {
       setCmdValues(args);
 
 	  if (command === "fish") {
-		function sendFishy() {
-			message.channel.send("t!fish");
+  		function sendFishy() {
+  			message.channel.send("t!fish");
 
-			if (count < maxMessages && !stop) {
-				count++;
-				timeToWait = Math.floor(Math.random() * 1500) + 30500;
-				setTimeout(sendFishy, timeToWait);
-			} else {
-				count = 1;
-				console.log("Finished");
-			}
-		}
+  			if (count < maxMessages && !stop) {
+  				count++;
+  				timeToWait = Math.floor(Math.random() * 1500) + 30500;
+  				setTimeout(sendFishy, timeToWait);
+  			} else {
+  				count = 1;
+  				console.log("Finished");
+  			}
+  		}
 
-		message.delete().catch(console.error);
-		sendFishy();
+  		message.delete().catch(console.error);
+  		sendFishy();
+	  }
+
+    if (command === "sellfish") {
+  		let sell = 1;
+  		function sendsell() {
+  			if (sell == 1) {
+  				message.channel.send("t!fish sell common");
+  				sell++;
+  			} else if (sell == 2) {
+  				message.channel.send("t!fish sell uncommon");
+  				sell++;
+  			} else if (sell == 3) {
+  				message.channel.send("t!fish sell garbage");
+  				sell = 1;
+  				count++;
+  			}
+
+  			if (count <= 1 && !stop) {
+  				timeToWait = Math.floor(Math.random() * 1500) + 5500;
+  				setTimeout(sendsell, timeToWait);
+  			} else {
+  				count = 1;
+  				console.log("Finished");
+  			}
+  		}
+
+  		message.delete().catch(console.error);
+  		sendsell();
 	  }
 
 	  if (command === "train") {
-		function sendTrain() {
-			message.channel.send("t!tg train");
+  		function sendTrain() {
+  			message.channel.send("t!tg train");
 
-			if (count < maxMessages && !stop) {
-				count++;
-				timeToWait = Math.floor(Math.random() * 1500) + 5500;
-				setTimeout(sendTrain, timeToWait);
-			} else {
-				count = 1;
-				console.log("Finished");
-			}
-		}
+  			if (count < maxMessages && !stop) {
+  				count++;
+  				timeToWait = Math.floor(Math.random() * 1500) + 5500;
+  				setTimeout(sendTrain, timeToWait);
+  			} else {
+  				count = 1;
+  				console.log("Finished");
+  			}
+  		}
 
-		message.delete().catch(console.error);
-		sendTrain();
+  		message.delete().catch(console.error);
+  		sendTrain();
 	  }
 
 	  if (command === "walk") {
-		let walk = 1;
-		function sendWalk() {
-			if (walk == 1) {
-				message.channel.send("t!tg walk");
-				walk++;
-			} else if (walk == 2) {
-				message.channel.send("t!tg walk");
-				walk++;
-			} else if (walk == 3) {
-				message.channel.send("t!tg feed");
-				walk = 1;
-				count++;
-			}
+  		let walk = 1;
+  		function sendWalk() {
+  			if (walk == 1) {
+  				message.channel.send("t!tg walk");
+  				walk++;
+  			} else if (walk == 2) {
+  				message.channel.send("t!tg walk");
+  				walk++;
+  			} else if (walk == 3) {
+  				message.channel.send("t!tg feed");
+  				walk = 1;
+  				count++;
+  			}
 
-			if (count <= maxMessages && !stop) {
-				timeToWait = Math.floor(Math.random() * 1500) + 5500;
-				setTimeout(sendWalk, timeToWait);
-			} else {
-				count = 1;
-				console.log("Finished");
-			}
-		}
+  			if (count <= maxMessages && !stop) {
+  				timeToWait = Math.floor(Math.random() * 1500) + 5500;
+  				setTimeout(sendWalk, timeToWait);
+  			} else {
+  				count = 1;
+  				console.log("Finished");
+  			}
+  		}
 
-		message.delete().catch(console.error);
-		sendWalk();
+  		message.delete().catch(console.error);
+  		sendWalk();
 	  }
 /*
       if (command === "spam") {
