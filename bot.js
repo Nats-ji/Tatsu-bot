@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const config = require('./config.json');
+var { parseArgsStringToArgv } = require('string-argv');
 
 process.on('unhandledRejection', error => {
   console.error(
@@ -15,7 +16,8 @@ var maxMessages = 10000;
 var timeToWait = null, minTime = 2000, maxTime = 4350;
 var content = null;
 var prune = false;
-setArgValues();
+var stop = false;
+// setArgValues();
 
 for (const token of config.botToken) {
   let count = 1; // Number of messages sent (modified by sendSpamMessage)
@@ -26,16 +28,16 @@ for (const token of config.botToken) {
     client.on("message", async message => {
       // Ignore message if the content doesn't apply to us
       if (message.author.id !== client.user.id || message.content.indexOf(client.config.prefix) !== 0) return;
-  
+
       const prefix = config.prefix;
-      const args = message.content.slice(prefix.length).trim().split(/ +/g);
-      const command = args.shift().toLowerCase();
-	  
+      const args = message.content.slice(prefix.length).trim();
+      setCmdValues(args);
+
 	  if (command === "fish") {
 		function sendFishy() {
 			message.channel.send("t!fish");
-			
-			if (count < maxMessages) {
+
+			if (count < maxMessages && !stop) {
 				count++;
 				timeToWait = Math.floor(Math.random() * 1500) + 30500;
 				setTimeout(sendFishy, timeToWait);
@@ -44,16 +46,16 @@ for (const token of config.botToken) {
 				console.log("Finished");
 			}
 		}
-		
+
 		message.delete().catch(console.error);
 		sendFishy();
 	  }
-	  
+
 	  if (command === "train") {
 		function sendTrain() {
 			message.channel.send("t!tg train");
-			
-			if (count < maxMessages) {
+
+			if (count < maxMessages && !stop) {
 				count++;
 				timeToWait = Math.floor(Math.random() * 1500) + 5500;
 				setTimeout(sendTrain, timeToWait);
@@ -62,11 +64,11 @@ for (const token of config.botToken) {
 				console.log("Finished");
 			}
 		}
-		
+
 		message.delete().catch(console.error);
 		sendTrain();
 	  }
-	  
+
 	  if (command === "walk") {
 		let walk = 1;
 		function sendWalk() {
@@ -81,8 +83,8 @@ for (const token of config.botToken) {
 				walk = 1;
 				count++;
 			}
-			
-			if (count <= maxMessages) {
+
+			if (count <= maxMessages && !stop) {
 				timeToWait = Math.floor(Math.random() * 1500) + 5500;
 				setTimeout(sendWalk, timeToWait);
 			} else {
@@ -90,38 +92,38 @@ for (const token of config.botToken) {
 				console.log("Finished");
 			}
 		}
-		
+
 		message.delete().catch(console.error);
 		sendWalk();
 	  }
-	  
+/*
       if (command === "spam") {
         function sendSpamMessage() {
           // You could modify this to send a random string from an array (ex. a quote), create a
           // random sentence by pulling words from a dictionary file, or to just send a random
           // arrangement of characters and integers. Doing something like this may help prevent
           // future moderation bots from detecting that you sent a spam message.
-  
+
           if (content) {
             message.channel.send(content);
           } else {
             message.channel.send("This is spam message #" + count);
           }
-          
+
           if (count < maxMessages) {
             // If you don't care about whether the messages are deleted or not, like if you created a dedicated server
             // channel just for bot spamming, you can remove the below statement and the entire prune command.
             if (prune) message.channel.send("/prune");
             count++;
-  
-            /* These numbers are good for if you want the messages to be deleted.
-             * I've also noticed that Discord pauses for about 4 seconds after you send 9
-             * messages in rapid succession, and this prevents that. I rarely have any spam
-             * messages slip through unless there is a level up from mee6 or Tatsumaki.
-             * Mileage may vary based on internet speed. */
+
+             // * These numbers are good for if you want the messages to be deleted.
+             // * I've also noticed that Discord pauses for about 4 seconds after you send 9
+             // * messages in rapid succession, and this prevents that. I rarely have any spam
+             // * messages slip through unless there is a level up from mee6 or Tatsumaki.
+             // * Mileage may vary based on internet speed.
             if (!timeToWait)
               timeToWait = Math.floor(Math.random() * (maxTime - minTime)) + minTime;
-  
+
             setTimeout(sendSpamMessage, timeToWait);
           } else {
             // Sends a message when count is equal to maxMessages. Else statement can be
@@ -132,11 +134,11 @@ for (const token of config.botToken) {
             message.channel.send("------------------");
           }
         }
-  
+
         message.delete().catch(console.error);
         sendSpamMessage();
       }
-  
+*/
       if (command === "prune") {
         message.channel.fetchMessages()
         .then(messages => {
@@ -186,6 +188,30 @@ function setArgValues() {
     // Doesn't require a second arg
     if (arg == "--prune") {
       prune = true;
+    }
+  }
+}
+
+function setCmdValues(cmd) {
+  var args = parseArgsStringToArgv(cmd);
+  var argLength = args.length;
+  command = args[0];
+
+  if (command == "stop") {
+    stop = true;
+  } else {
+    stop = false;
+  }
+
+  for (let j = 1; j < argLength; j++) {
+    let argsLeft = j + 1 < argLength;
+    let arg = args[j];
+    let nextArg = args[j + 1];
+
+    if (argsLeft) {
+      if (arg == "count") {
+        maxMessages = nextArg;
+      }
     }
   }
 }
