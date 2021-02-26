@@ -35,6 +35,8 @@ for (const token of config.botToken) {
 
 	  if (command === "fish") {
   		function sendFishy() {
+        console.clear();
+        console.log(`Afk fishing, current run ${count}/${maxMessages}.`);
   			message.channel.send("t!fish");
 
   			if (count < maxMessages && !stop) {
@@ -43,7 +45,7 @@ for (const token of config.botToken) {
   				setTimeout(sendFishy, timeToWait);
   			} else {
   				count = 1;
-  				console.log("Finished");
+  				console.log("Afk fishing finished.");
   			}
   		}
 
@@ -52,16 +54,21 @@ for (const token of config.botToken) {
 	  }
 
     if (command === "sellfish") {
+      console.clear();
+      console.log("Selling all fish.");
   		let sell = 1;
   		function sendsell() {
   			if (sell == 1) {
   				message.channel.send("t!fish sell common");
+          console.log("Sold all common fish.");
   				sell++;
   			} else if (sell == 2) {
   				message.channel.send("t!fish sell uncommon");
+          console.log("Sold all uncommon fish.");
   				sell++;
   			} else if (sell == 3) {
   				message.channel.send("t!fish sell garbage");
+          console.log("Sold all trash.");
   				sell = 1;
   				count++;
   			}
@@ -71,7 +78,7 @@ for (const token of config.botToken) {
   				setTimeout(sendsell, timeToWait);
   			} else {
   				count = 1;
-  				console.log("Finished");
+  				console.log("Sold all inventory.");
   			}
   		}
 
@@ -81,6 +88,8 @@ for (const token of config.botToken) {
 
 	  if (command === "train") {
   		function sendTrain() {
+        console.clear();
+        console.log(`Afk training pet, current run ${count}/${maxMessages}.`);
   			message.channel.send("t!tg train");
 
   			if (count < maxMessages && !stop) {
@@ -100,6 +109,8 @@ for (const token of config.botToken) {
 	  if (command === "walk") {
   		let walk = 1;
   		function sendWalk() {
+        console.clear();
+        console.log(`Afk walking pet, current run ${count}/${maxMessages}.`);
   			if (walk == 1) {
   				message.channel.send("t!tg walk");
   				walk++;
