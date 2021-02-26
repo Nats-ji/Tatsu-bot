@@ -2,24 +2,34 @@ Forkedd from [ajmeese7/spambot](https://github.com/ajmeese7/spambot).
 
 # How to use:
 
+```sh
+node bot.js
+```
+
+Type in chat:
 - Afk fishing:
    ```sh
-   node bot.js --maxMessages 100
+   /fish count 500
    ```
-   then type `/fish` in discord.
+
+- Sell all fish:
+   ```sh
+   /sellfish
+   ```
 
 - Afk pet training:
    ```sh
-   node bot.js --maxMessages 100
+   /train count 160
    ```
-   then type `/train` in discord.
 
 - Afk walking pet:
    ```sh
-   node bot.js --maxMessages 100
+   /walk count 25
    ```
-   then type `/walk` in discord.
-
+- Stop
+   ```sh
+   /stop
+   ```
 
 # Original Guide:
 
@@ -49,14 +59,14 @@ Forkedd from [ajmeese7/spambot](https://github.com/ajmeese7/spambot).
   <img alt="Spambot Usage GIF" src="https://user-images.githubusercontent.com/17814535/33146576-5b103a6c-cf8a-11e7-8d47-cc2938138be8.gif">
 </p>
 
-This selfbot's primary purpose is to level up your profile on Discord bots such as 
-[mee6](https://github.com/cookkkie/mee6) or [Tatsumaki](https://tatsumaki.xyz). 
-Of course, either of those bots must be installed on the server you intend to use 
+This selfbot's primary purpose is to level up your profile on Discord bots such as
+[mee6](https://github.com/cookkkie/mee6) or [Tatsumaki](https://tatsumaki.xyz).
+Of course, either of those bots must be installed on the server you intend to use
 this bot on for you to gain experience.
 
-Since your Tatsumaki profile transfers across servers (unlike mee6), you can create your 
-own server specifically for spam messages and no one (except Discord) will know. When 
-you connect to other servers, they will just see your Tatsumaki profile and think you're 
+Since your Tatsumaki profile transfers across servers (unlike mee6), you can create your
+own server specifically for spam messages and no one (except Discord) will know. When
+you connect to other servers, they will just see your Tatsumaki profile and think you're
 one cool cat.
 
 mee6 gives out between 15-25 XP once per minute to prevent XP spamming, so you could change the times on the bot to reflect that very easily. It's as simple as changing `minTime = Math.ceil(2112)` to `minTime = Math.ceil(60000)` and doing something similar to `maxTime`. I recommend doing something like this because spamming messages too quickly can cause `DiscordAPIError`s, which can force the bot to stop. The settings on my personal bot are `minTime = Math.ceil(7500)` and `maxTime = Math.floor(11240)`. Tatsumaki only grants XP once every two minutes, so if you are only planning on targeting XP gain on that bot, you can set the time between messages to two minutes and one second (in milliseconds).
@@ -72,7 +82,7 @@ In a command prompt in your projects folder (wherever that may be), run the foll
 
 `git clone https://github.com/ajmeese7/spambot`
 
-Also note that this will not work if you are running discord.js 11.6.3 or higher. 
+Also note that this will not work if you are running discord.js 11.6.3 or higher.
 To install the newest version of discord.js that this will work on, run the following in command prompt:
 
 `npm install discord.js@11.6.2`
