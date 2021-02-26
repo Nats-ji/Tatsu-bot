@@ -10,6 +10,8 @@
   "author": "Aaron Meese",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.2.1"
+    "@discordjs/uws": "^10.149.0",
+    "discord.js": "^11.2.1",
+    "string-argv": "^0.3.1"
   }
 }
