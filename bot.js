@@ -12,11 +12,12 @@ process.on('unhandledRejection', error => {
 });
 
 console.log("Ready to level up!");
-var maxMessages = 10000;
+var maxMessages = null;
 var timeToWait = null, minTime = 2000, maxTime = 4350;
 var content = null;
 var prune = false;
 var stop = false;
+var bet = 1;
 // setArgValues();
 
 for (const token of config.botToken) {
@@ -34,6 +35,8 @@ for (const token of config.botToken) {
       setCmdValues(args);
 
 	  if (command === "fish") {
+      if (!maxMessages)
+        maxMessages = 250;
   		function sendFishy() {
         console.clear();
         console.log(`Afk fishing, current run ${count}/${maxMessages}.`);
@@ -45,6 +48,7 @@ for (const token of config.botToken) {
   				setTimeout(sendFishy, timeToWait);
   			} else {
   				count = 1;
+          maxMessages = null;
   				console.log("Afk fishing finished.");
   			}
   		}
@@ -87,6 +91,8 @@ for (const token of config.botToken) {
 	  }
 
 	  if (command === "train") {
+      if (!maxMessages)
+        maxMessages = 170;
   		function sendTrain() {
         console.clear();
         console.log(`Afk training pet, current run ${count}/${maxMessages}.`);
@@ -98,6 +104,7 @@ for (const token of config.botToken) {
   				setTimeout(sendTrain, timeToWait);
   			} else {
   				count = 1;
+          maxMessages = null;
   				console.log("Finished");
   			}
   		}
@@ -107,6 +114,8 @@ for (const token of config.botToken) {
 	  }
 
 	  if (command === "walk") {
+      if (!maxMessages)
+        maxMessages = 25;
   		let walk = 1;
   		function sendWalk() {
         console.clear();
@@ -128,12 +137,37 @@ for (const token of config.botToken) {
   				setTimeout(sendWalk, timeToWait);
   			} else {
   				count = 1;
+          maxMessages = null;
   				console.log("Finished");
   			}
   		}
 
   		message.delete().catch(console.error);
   		sendWalk();
+	  }
+
+	  if (command === "slot") {
+      if (!maxMessages)
+        maxMessages = 100;
+  		function sendSlot() {
+        console.clear();
+        console.log(`Afk playing slot. Betting ${bet} Credit(s) each run, current run ${count}/${maxMessages}.`);
+  			message.channel.send(`t!slot ${bet}`);
+
+  			if (count < maxMessages && !stop) {
+  				count++;
+  				timeToWait = Math.floor(Math.random() * 1500) + 5500;
+  				setTimeout(sendSlot, timeToWait);
+  			} else {
+  				count = 1;
+          bet = 1;
+          maxMessages = null;
+  				console.log("Finished");
+  			}
+  		}
+
+  		message.delete().catch(console.error);
+  		sendSlot();
 	  }
 /*
       if (command === "spam") {
@@ -248,9 +282,10 @@ function setCmdValues(cmd) {
     let nextArg = args[j + 1];
 
     if (argsLeft) {
-      if (arg == "count") {
+      if (arg == "count")
         maxMessages = nextArg;
-      }
+      if (arg == "bet")
+        bet = nextArg;
     }
   }
 }
