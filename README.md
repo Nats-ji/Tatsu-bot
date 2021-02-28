@@ -32,6 +32,12 @@ Type in chat:
    /slot bet 1 count 100
    ```
 
+- Afk sending cookies:
+   ```sh
+   /cookie to random count 10
+   /cookie to user count 10
+   ```
+
 - Stop
    ```sh
    /stop
