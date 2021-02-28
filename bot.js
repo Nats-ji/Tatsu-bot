@@ -18,6 +18,7 @@ var content = null;
 var prune = false;
 var stop = false;
 var bet = 1;
+var cookieto = null;
 // setArgValues();
 
 for (const token of config.botToken) {
@@ -169,6 +170,35 @@ for (const token of config.botToken) {
   		message.delete().catch(console.error);
   		sendSlot();
 	  }
+
+    if (command === "cookie") {
+      if (!maxMessages)
+        maxMessages = 10;
+      function sendCookie() {
+        let touser = null;
+        if (cookieto && cookieto != "random")
+          touser = cookieto;
+        else
+          touser = message.guild.members.random().user.username;
+        console.clear();
+        console.log(`Afk sending cookies. Sending to ${touser}, current run ${count}/${maxMessages}.`);
+  			message.channel.send(`t!cookie ${touser}`);
+
+  			if (count < maxMessages && !stop) {
+  				count++;
+  				timeToWait = Math.floor(Math.random() * 1500) + 5500;
+  				setTimeout(sendCookie, timeToWait);
+  			} else {
+  				count = 1;
+          cookieto = null;
+          maxMessages = null;
+  				console.log("Finished");
+  			}
+  		}
+
+  		message.delete().catch(console.error);
+  		sendCookie();
+    }
 /*
       if (command === "spam") {
         function sendSpamMessage() {
@@ -284,8 +314,10 @@ function setCmdValues(cmd) {
     if (argsLeft) {
       if (arg == "count")
         maxMessages = nextArg;
-      if (arg == "bet")
+      if (command == "slot" && arg == "bet")
         bet = nextArg;
+      if (command == "cookie" && arg == "to")
+        cookieto = nextArg;
     }
   }
 }
