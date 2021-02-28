@@ -26,6 +26,12 @@ Type in chat:
    ```sh
    /walk count 25
    ```
+
+- Afk playing slot:
+   ```sh
+   /slot bet 1 count 100
+   ```
+
 - Stop
    ```sh
    /stop
