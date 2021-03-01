@@ -38,6 +38,13 @@ Type in chat:
    /cookie to user count 10
    ```
 
+- Afk leveling up:
+   </br>Edit the messages in `messages.json`.
+   ```sh
+   /level count 200
+   /level count 200 prune
+   ```
+
 - Stop
    ```sh
    /stop
