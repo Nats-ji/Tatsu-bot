@@ -36,203 +36,222 @@ for (const token of config.botToken) {
       const args = message.content.slice(prefix.length).trim();
       setCmdValues(args);
 
-	  if (command === "fish") {
-      if (!maxMessages)
-        maxMessages = 250;
-  		function sendFishy() {
-        console.clear();
-        console.log(`Afk fishing, current run ${count}/${maxMessages}.`);
-  			message.channel.send("t!fish");
-
-  			if (count < maxMessages && !stop) {
-  				count++;
-  				timeToWait = Math.floor(Math.random() * 1500) + 30500;
-  				setTimeout(sendFishy, timeToWait);
-  			} else {
-  				count = 1;
-          maxMessages = null;
-  				console.log("Afk fishing finished.");
-  			}
-  		}
-
-  		message.delete().catch(console.error);
-  		sendFishy();
-	  }
-
-    if (command === "sellfish") {
-      console.clear();
-      console.log("Selling all fish.");
-  		let sell = 1;
-  		function sendsell() {
-  			if (sell == 1) {
-  				message.channel.send("t!fish sell common");
-          console.log("Sold all common fish.");
-  				sell++;
-  			} else if (sell == 2) {
-  				message.channel.send("t!fish sell uncommon");
-          console.log("Sold all uncommon fish.");
-  				sell++;
-  			} else if (sell == 3) {
-  				message.channel.send("t!fish sell garbage");
-          console.log("Sold all trash.");
-  				sell = 1;
-  				count++;
-  			}
-
-  			if (count <= 1 && !stop) {
-  				timeToWait = Math.floor(Math.random() * 1500) + 5500;
-  				setTimeout(sendsell, timeToWait);
-  			} else {
-  				count = 1;
-  				console.log("Sold all inventory.");
-  			}
-  		}
-
-  		message.delete().catch(console.error);
-  		sendsell();
-	  }
-
-	  if (command === "train") {
-      if (!maxMessages)
-        maxMessages = 170;
-  		function sendTrain() {
-        console.clear();
-        console.log(`Afk training pet, current run ${count}/${maxMessages}.`);
-  			message.channel.send("t!tg train");
-
-  			if (count < maxMessages && !stop) {
-  				count++;
-  				timeToWait = Math.floor(Math.random() * 1500) + 5500;
-  				setTimeout(sendTrain, timeToWait);
-  			} else {
-  				count = 1;
-          maxMessages = null;
-  				console.log("Finished");
-  			}
-  		}
-
-  		message.delete().catch(console.error);
-  		sendTrain();
-	  }
-
-	  if (command === "walk") {
-      if (!maxMessages)
-        maxMessages = 25;
-  		let walk = 1;
-  		function sendWalk() {
-        console.clear();
-        console.log(`Afk walking pet, current run ${count}/${maxMessages}.`);
-  			if (walk == 1) {
-  				message.channel.send("t!tg walk");
-  				walk++;
-  			} else if (walk == 2) {
-  				message.channel.send("t!tg walk");
-  				walk++;
-  			} else if (walk == 3) {
-  				message.channel.send("t!tg feed");
-  				walk = 1;
-  				count++;
-  			}
-
-  			if (count <= maxMessages && !stop) {
-  				timeToWait = Math.floor(Math.random() * 1500) + 5500;
-  				setTimeout(sendWalk, timeToWait);
-  			} else {
-  				count = 1;
-          maxMessages = null;
-  				console.log("Finished");
-  			}
-  		}
-
-  		message.delete().catch(console.error);
-  		sendWalk();
-	  }
-
-	  if (command === "slot") {
-      if (!maxMessages)
-        maxMessages = 100;
-  		function sendSlot() {
-        console.clear();
-        console.log(`Afk playing slot. Betting ${bet} Credit(s) each run, current run ${count}/${maxMessages}.`);
-  			message.channel.send(`t!slot ${bet}`);
-
-  			if (count < maxMessages && !stop) {
-  				count++;
-  				timeToWait = Math.floor(Math.random() * 1500) + 5500;
-  				setTimeout(sendSlot, timeToWait);
-  			} else {
-  				count = 1;
-          bet = 1;
-          maxMessages = null;
-  				console.log("Finished");
-  			}
-  		}
-
-  		message.delete().catch(console.error);
-  		sendSlot();
-	  }
-
-    if (command === "cookie") {
-      if (!maxMessages)
-        maxMessages = 10;
-      function sendCookie() {
-        let touser = null;
-        if (cookieto && cookieto != "random")
-          touser = cookieto;
-        else
-          touser = message.guild.members.random().user.username;
-        console.clear();
-        console.log(`Afk sending cookies. Sending to ${touser}, current run ${count}/${maxMessages}.`);
-  			message.channel.send(`t!cookie ${touser}`);
-
-  			if (count < maxMessages && !stop) {
-  				count++;
-  				timeToWait = Math.floor(Math.random() * 1500) + 5500;
-  				setTimeout(sendCookie, timeToWait);
-  			} else {
-  				count = 1;
-          cookieto = null;
-          maxMessages = null;
-  				console.log("Finished");
-  			}
-  		}
-
-  		message.delete().catch(console.error);
-  		sendCookie();
-    }
-
-    if (command === "level") {
-      if (!maxMessages)
-      maxMessages = 200;
-
-      function getRandomInt(min, max) {
-        // Maximum exclusive and minimum inclusive
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min) + min);
+      function prune() {
+        message.channel.fetchMessages()
+        .then(messages => {
+          let message_array = messages.array();
+          message_array.length = 1;
+          message_array.map(msg => msg.delete().catch(O_o => {}));
+        }).catch(console.error);
       }
 
-  		function sendLevel() {
-        let content = messages[getRandomInt(0, messages.length)];
+  	  if (command === "fish") {
+        if (!maxMessages)
+          maxMessages = 250;
+    		function sendFishy() {
+          console.clear();
+          console.log(`Afk fishing, current run ${count}/${maxMessages}.`);
+    			message.channel.send("t!fish");
+
+    			if (count < maxMessages && !stop) {
+    				count++;
+    				timeToWait = Math.floor(Math.random() * 1500) + 30500;
+    				setTimeout(sendFishy, timeToWait);
+    			} else {
+    				count = 1;
+            maxMessages = null;
+            prune = false;
+    				console.log("Afk fishing finished.");
+    			}
+    		}
+
+    		message.delete().catch(console.error);
+    		sendFishy();
+  	  }
+
+      if (command === "sellfish") {
         console.clear();
-        console.log(`Afk leveling up, current run ${count}/${maxMessages}.`);
-        console.log(`Message sent: ${content}`);
-  			message.channel.send(content);
+        console.log("Selling all fish.");
+    		let sell = 1;
+    		function sendsell() {
+    			if (sell == 1) {
+    				message.channel.send("t!fish sell common");
+            console.log("Sold all common fish.");
+    				sell++;
+    			} else if (sell == 2) {
+    				message.channel.send("t!fish sell uncommon");
+            console.log("Sold all uncommon fish.");
+    				sell++;
+    			} else if (sell == 3) {
+    				message.channel.send("t!fish sell garbage");
+            console.log("Sold all trash.");
+    				sell = 1;
+    				count++;
+    			}
 
-  			if (count < maxMessages && !stop) {
-  				count++;
-  				timeToWait = Math.floor(Math.random() * 10000) + 120500;
-  				setTimeout(sendLevel, timeToWait);
-  			} else {
-  				count = 1;
-          maxMessages = null;
-  				console.log("Finished");
-  			}
-  		}
+    			if (count <= 1 && !stop) {
+    				timeToWait = Math.floor(Math.random() * 1500) + 5500;
+    				setTimeout(sendsell, timeToWait);
+    			} else {
+    				count = 1;
+            prune = false;
+    				console.log("Sold all inventory.");
+    			}
+    		}
 
-  		message.delete().catch(console.error);
-  		sendLevel();
-	  }
+    		message.delete().catch(console.error);
+    		sendsell();
+  	  }
+
+  	  if (command === "train") {
+        if (!maxMessages)
+          maxMessages = 170;
+    		function sendTrain() {
+          console.clear();
+          console.log(`Afk training pet, current run ${count}/${maxMessages}.`);
+    			message.channel.send("t!tg train");
+
+    			if (count < maxMessages && !stop) {
+    				count++;
+    				timeToWait = Math.floor(Math.random() * 1500) + 5500;
+    				setTimeout(sendTrain, timeToWait);
+    			} else {
+    				count = 1;
+            maxMessages = null;
+            prune = false;
+    				console.log("Finished");
+    			}
+    		}
+
+    		message.delete().catch(console.error);
+    		sendTrain();
+  	  }
+
+  	  if (command === "walk") {
+        if (!maxMessages)
+          maxMessages = 25;
+    		let walk = 1;
+    		function sendWalk() {
+          console.clear();
+          console.log(`Afk walking pet, current run ${count}/${maxMessages}.`);
+    			if (walk == 1) {
+    				message.channel.send("t!tg walk");
+    				walk++;
+    			} else if (walk == 2) {
+    				message.channel.send("t!tg walk");
+    				walk++;
+    			} else if (walk == 3) {
+    				message.channel.send("t!tg feed");
+    				walk = 1;
+    				count++;
+    			}
+
+    			if (count <= maxMessages && !stop) {
+    				timeToWait = Math.floor(Math.random() * 1500) + 5500;
+    				setTimeout(sendWalk, timeToWait);
+    			} else {
+    				count = 1;
+            maxMessages = null;
+            prune = false;
+    				console.log("Finished");
+    			}
+    		}
+
+    		message.delete().catch(console.error);
+    		sendWalk();
+  	  }
+
+  	  if (command === "slot") {
+        if (!maxMessages)
+          maxMessages = 100;
+    		function sendSlot() {
+          console.clear();
+          console.log(`Afk playing slot. Betting ${bet} Credit(s) each run, current run ${count}/${maxMessages}.`);
+    			message.channel.send(`t!slot ${bet}`);
+
+    			if (count < maxMessages && !stop) {
+    				count++;
+    				timeToWait = Math.floor(Math.random() * 1500) + 5500;
+    				setTimeout(sendSlot, timeToWait);
+    			} else {
+    				count = 1;
+            bet = 1;
+            maxMessages = null;
+            prune = false;
+    				console.log("Finished");
+    			}
+    		}
+
+    		message.delete().catch(console.error);
+    		sendSlot();
+  	  }
+
+      if (command === "cookie") {
+        if (!maxMessages)
+          maxMessages = 10;
+        function sendCookie() {
+          let touser = null;
+          if (cookieto && cookieto != "random")
+            touser = cookieto;
+          else
+            touser = message.guild.members.random().user.username;
+          console.clear();
+          console.log(`Afk sending cookies. Sending to ${touser}, current run ${count}/${maxMessages}.`);
+    			message.channel.send(`t!cookie ${touser}`);
+
+    			if (count < maxMessages && !stop) {
+    				count++;
+    				timeToWait = Math.floor(Math.random() * 1500) + 5500;
+    				setTimeout(sendCookie, timeToWait);
+    			} else {
+    				count = 1;
+            cookieto = null;
+            maxMessages = null;
+            prune = false;
+    				console.log("Finished");
+    			}
+    		}
+
+    		message.delete().catch(console.error);
+    		sendCookie();
+      }
+
+      if (command === "level") {
+        if (!maxMessages)
+        maxMessages = 200;
+
+        function getRandomInt(min, max) {
+          // Maximum exclusive and minimum inclusive
+          min = Math.ceil(min);
+          max = Math.floor(max);
+          return Math.floor(Math.random() * (max - min) + min);
+        }
+
+    		function sendLevel() {
+          let content = messages[getRandomInt(0, messages.length)];
+          console.clear();
+          console.log(`Afk leveling up, current run ${count}/${maxMessages}.`);
+          console.log(`Message sent: ${content}`);
+    			message.channel.send(content);
+
+          if (prune)
+            prune();
+
+    			if (count < maxMessages && !stop) {
+    				count++;
+    				timeToWait = Math.floor(Math.random() * 10000) + 120500
+    				setTimeout(sendLevel, timeToWait);
+    			} else {
+    				count = 1;
+            maxMessages = null;
+            prune = false;
+    				console.log("Finished");
+    			}
+    		}
+
+    		message.delete().catch(console.error);
+    		sendLevel();
+  	  }
 /*
       if (command === "spam") {
         function sendSpamMessage() {
@@ -276,14 +295,7 @@ for (const token of config.botToken) {
         sendSpamMessage();
       }
 */
-      if (command === "prune") {
-        message.channel.fetchMessages()
-        .then(messages => {
-          let message_array = messages.array();
-          message_array.length = 2;
-          message_array.map(msg => msg.delete().catch(O_o => {}));
-        }).catch(console.error);
-      }
+
     });
   } catch (error) {
     console.error("CAUGHT ERROR =>", error);
@@ -352,6 +364,10 @@ function setCmdValues(cmd) {
         bet = nextArg;
       if (command == "cookie" && arg == "to")
         cookieto = nextArg;
+    }
+
+    if (arg == "prune") {
+      prune = true;
     }
   }
 }
