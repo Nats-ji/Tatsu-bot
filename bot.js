@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const config = require('./config.json');
+const messages = require('./messages.json')
 var { parseArgsStringToArgv } = require('string-argv');
 
 process.on('unhandledRejection', error => {
@@ -199,6 +200,39 @@ for (const token of config.botToken) {
   		message.delete().catch(console.error);
   		sendCookie();
     }
+
+    if (command === "level") {
+      if (!maxMessages)
+      maxMessages = 200;
+
+      function getRandomInt(min, max) {
+        // Maximum exclusive and minimum inclusive
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min);
+      }
+
+  		function sendLevel() {
+        let content = messages[getRandomInt(0, messages.length)];
+        console.clear();
+        console.log(`Afk leveling up, current run ${count}/${maxMessages}.`);
+        console.log(`Message sent: ${content}`);
+  			message.channel.send(content);
+
+  			if (count < maxMessages && !stop) {
+  				count++;
+  				timeToWait = Math.floor(Math.random() * 10000) + 120500;
+  				setTimeout(sendLevel, timeToWait);
+  			} else {
+  				count = 1;
+          maxMessages = null;
+  				console.log("Finished");
+  			}
+  		}
+
+  		message.delete().catch(console.error);
+  		sendLevel();
+	  }
 /*
       if (command === "spam") {
         function sendSpamMessage() {
